@@ -81,7 +81,7 @@ exports.lawyerSignup = async (req, res) => {
 
             // Send email notification with the email body
             const email = req.body.email; // Get the email address from the request
-            sendEmail(emailBody, email); // Pass the email and email body as arguments
+            await sendEmail(emailBody, email); // Pass the email and email body as arguments
 
             res.status(201).json({ msg: "Signup successful", status: "success" });
 
