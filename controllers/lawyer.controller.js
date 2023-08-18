@@ -1,7 +1,11 @@
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const bcrypt = require('bcrypt');
-const LawyerModel = require("../model/lawyer.model"); // Import the addLawyer method from admin.controller
+const LawyerModel = require("../model/lawyer.model");
+const generatePassword = require("../utils/generatePassword.js")
+const emailTemplate = require('../utils/email-templates.js');
+const sendEmail = require('../utils/notificaton.js');
+ // Import the addLawyer method from admin.controller
 
 const transporter = nodemailer.createTransport({
     service: "gmail",
