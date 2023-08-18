@@ -6,7 +6,6 @@ const nodemailer = require("nodemailer");
 const generatePassword = require("../utils/generatePassword.js")
 const emailTemplate = require('../utils/email-templates.js');
 const sendEmail = require('../utils/notificaton.js');
-const express = require('express');
 
 
 
@@ -76,7 +75,6 @@ exports.fetchLawyerById = async (req, res) => {
     }
 }
 exports.addLawyer = async (req, res) => {
-    const jsonRes = express.json();
     const payload = req.body;
     try {
         const lawyer = await LawyerModel.find({ email: payload.email });
@@ -98,7 +96,7 @@ exports.addLawyer = async (req, res) => {
 
         })
     } catch (error) {
-        jsonRes.status(500).json({ Error: error.message })
+        res.status(500).json({ Error: error.message })
         console.log(error)
     }
 }
