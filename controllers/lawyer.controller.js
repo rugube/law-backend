@@ -5,6 +5,8 @@ const LawyerModel = require("../model/lawyer.model");
 const generatePassword = require("../utils/generatePassword.js")
 const emailTemplate = require('../utils/email-templates.js');
 const sendEmail = require('../utils/notificaton.js');
+const { otpEmail } = require('../utils/email-templates.js');
+
  // Import the addLawyer method from admin.controller
 
 const transporter = nodemailer.createTransport({
@@ -75,7 +77,10 @@ exports.lawyerSignup = async (req, res) => {
 
             //! sending account details notification
             const newPass = generatePassword(); // Generate password
-            sendEmail(emailTemplate(email, newPass)); // Send email notification
+            const emailBody = otpEmail(newPass); // Generate the email content using the template
+
+            // Send email notification with the email body
+            sendEmail(email, emailBody);
 
             res.status(201).json({ msg: "Signup successful", status: "success" });
 
