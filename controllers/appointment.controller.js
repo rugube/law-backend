@@ -27,7 +27,7 @@ exports.addAppointment = async (req, res) => {
 
     const mailOptions = {
         from: "ace.legal.services.official@gmail.com",
-        to: payload.userEmail,
+        to: [payload.userEmail, payload.lawyerEmail],
         subject: "Appointment Status",
         html: emailTemplate.appointmentSuccess(userName, lawyerName, payload.appointment_date?.date, payload?.appointmentTime, payload?.meeting_type)
     };
