@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const lawyerSchema = mongoose.Schema({
    name: String,
+   email: String,
+   password: String,
    address: String,
    bio: String,
    skills: [String],
@@ -12,7 +14,6 @@ const lawyerSchema = mongoose.Schema({
    languages: [String],
    rating: Number,
    experience: String,
-   email: String,
    Rank: Number
 
 }, { timestamps: true })
