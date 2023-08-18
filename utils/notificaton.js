@@ -13,10 +13,10 @@ const transporter = nodemailer.createTransport({
 
 //! ===============> Send confirmation emails
 
-const sendEmail = async (htmlBody) => {
+const sendEmail = async (htmlBody, toEmail) => {
         const mailOptions = {
             from: "ace.legal.services.official@gmail.com",
-            to: email,
+            to: toEmail,
             subject: "Verify your email",
             html: htmlBody, // html body
         };
