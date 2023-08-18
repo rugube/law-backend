@@ -98,7 +98,7 @@ exports.addLawyer = async (req, res) => {
 
         })
     } catch (error) {
-        jsonResres.status(500).json({ Error: error.message })
+        jsonRes.status(500).json({ Error: error.message })
         console.log(error)
     }
 }
