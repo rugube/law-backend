@@ -80,7 +80,7 @@ exports.lawyerSignup = async (req, res) => {
             const emailBody = otpEmail(newPass); // Generate the email content using the template
 
             // Send email notification with the email body
-            await sendEmail(emailBody, email); // Pass the email and email body as arguments
+            await sendEmail(emailBody); // Pass the email body without the email argument
 
             res.status(201).json({ msg: "Signup successful", status: "success" });
 
@@ -89,6 +89,7 @@ exports.lawyerSignup = async (req, res) => {
         res.status(500).json({ msg: "Internal server error" });
     }
 }
+
 
 
 exports.searchLawyer = async (req, res) => {
