@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const bcrypt = require('bcrypt');
 const LawyerModel = require("../model/lawyer.model");
+const { addLawyer } = require("./admin.controller"); // Import the addLawyer method from admin.controller
 
 const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -68,6 +69,9 @@ exports.lawyerSignup = async (req, res) => {
 
             await newLawyer.save();
             res.status(201).json({ msg: "Signup successful", status: "success" });
+
+            // Add the new lawyer to the lawyers collection
+            await addLawyer(newLawyer);
         });
     } catch (error) {
         res.status(500).json({ msg: "Internal server error" });

@@ -12,13 +12,13 @@ exports.otpEmail = (otp) => {
   <tbody>
         <tr>
           <td style="text-align: center; padding-bottom: 30px;">
-          <img src="#" alt="Ace Legal Services">
+          <img src="#" alt="Gweta Rangu">
           </td>
           </tr>
           <tr>
           <td>
           <p style="margin-top: 0;">Hello,</p>
-          <p>Thank you for signing  up with us. Please verify your email to finish signing up with Ace Legal Services. Use the following verification code:</p>
+          <p>Thank you for signing  up with us. Please verify your email to finish signing up with Gweta Rangu. Use the following verification code:</p>
           <h2 style="text-align: center; margin-top: 20px; margin-bottom: 40px; font-size: 36px; color: #333; background-color: #f7f7f7; padding: 20px;">${otp}</h2>
           <p>If you did not request this OTP, please ignore this email.</p>
           </td>
@@ -26,7 +26,7 @@ exports.otpEmail = (otp) => {
           <tr>
           <td style="border-top: 1px solid #ccc; padding-top: 30px;">
           <p style="margin-top: 0; font-size: 14px;">Best regards,</p>
-          <p style="margin-top: 0; font-size: 14px;">Ace Legal Services</p>
+          <p style="margin-top: 0; font-size: 14px;">Gweta Rangu</p>
           </td>
           </tr>
           </tbody>
@@ -45,7 +45,7 @@ exports.signupSuccess = () => {
   <body>
   <div style="background-color:#F2F2F2; padding:20px;">
   <div style="background-color:#FFFFFF; max-width:600px; margin:0 auto; padding:20px; border-radius:10px;">
-  <img src="https://example.com/logo.png" alt="Ace Legal Services" style="display:block; margin:0 auto; max-width:150px;">
+  <img src="https://example.com/logo.png" alt="Gweta Rangu" style="display:block; margin:0 auto; max-width:150px;">
   
   <h1 style="text-align:center; margin-top:30px;">Welcome to Our Community!</h1>
   <p style="text-align:center; font-size:18px; font-weight:bold;">Thank you for signing up for our service.</p>
@@ -159,7 +159,7 @@ exports.appointmentSuccess = (clientName, lawyerName, date, time, type) => {
             <p>If you need to make any changes to your appointment or have any questions, please contact us at <a href="mailto:ace.legal.services.official@gmail.com">ace.legal.services.official@gmail.com</a>.</p>
             <p>Thank you for choosing our services. We look forward to seeing you soon.</p>
             <div class="footer">
-            <p>© 2023 Ace Legal Services. All rights reserved.</p>
+            <p>© 2023 Gweta Rangu. All rights reserved.</p>
             </div>
             </div>        
         </body>
@@ -270,12 +270,12 @@ exports.resetPassword = (userName, link) => {
             <div style="background-color: #fff; max-width: 600px; margin: 0 auto; border-radius: 5px; padding: 40px;">
               <h1 style="font-size: 24px; margin-bottom: 20px;">Reset Your Password</h1>
               <p style="margin-bottom: 20px;">Dear ${userName},</p>
-              <p style="margin-bottom: 20px;">You recently requested to reset your password for <b>Ace Legal Services.</b> Click the button below to set a new password:</p>
+              <p style="margin-bottom: 20px;">You recently requested to reset your password for <b>Gweta Rangu.</b> Click the button below to set a new password:</p>
               <div style="margin-bottom: 20px;">
                 <a href="${link}" style="display: inline-block; padding: 10px 20px; background-color: #3498db; color: #fff; text-decoration: none; border-radius: 5px;">Click to Set New Password</a>
               </div>
               <p style="margin-bottom: 20px;">If you did not request a password reset, please ignore this email or reply to let us know.</p>
-              <p style="margin-bottom: 20px;">Best regards,<br><b>Ace Legal Services</b> Team</p>
+              <p style="margin-bottom: 20px;">Best regards,<br><b>Gweta Rangu</b> Team</p>
             </div>
           </body>
         </html>

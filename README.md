@@ -1,6 +1,6 @@
-# ACE LEGAL SERVICES ⚖️
+# Gweta Rangu ⚖️
 
-- This is the Backend Repository of Ace Legal Services (For Deployement):-
+- This is the Backend Repository of Gweta Rangu (For Deployement):-
 - Orignal Project Link is Here ---> https://github.com/Mr-Soni532/young-zinc-6102
 
 > Project Code : young-zinc-6102 <br/>
@@ -13,7 +13,7 @@
 ## 🏷️ What is Ace Legal Sevices?
 
 - An Orignal Web Project for Legal Booking Appointment System.
-- Ace Legal Services is an online web services for users and lawyers for formal connects.
+- Gweta Rangu is an online web services for users and lawyers for formal connects.
 - We provide appointment facalities for with 12,000+ Professional Advocates around the World.
 
 ---
