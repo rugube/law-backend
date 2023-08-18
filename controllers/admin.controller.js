@@ -75,6 +75,7 @@ exports.fetchLawyerById = async (req, res) => {
     }
 }
 exports.addLawyer = async (req, res) => {
+    const jsonRes = express.json();
     const payload = req.body;
     try {
         const lawyer = await LawyerModel.find({ email: payload.email });
@@ -96,7 +97,7 @@ exports.addLawyer = async (req, res) => {
 
         })
     } catch (error) {
-        res.status(500).json({ Error: error.message })
+        jsonResres.status(500).json({ Error: error.message })
         console.log(error)
     }
 }
