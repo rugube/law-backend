@@ -10,15 +10,6 @@ const sendEmail = require('../utils/notificaton.js');
 
 
 //! ============> Admin
-// Error handling middleware
-const errorHandler = (err, req, res, next) => {
-    console.error(err); // Log the error for debugging
-    res.status(500).json({ error: "An internal server error occurred." });
-  };
-
-// Apply the error handling middleware
-app.use(errorHandler);
-
 exports.fetchAllAdmins = async (req, res) => {
     try {
         const admin = await AdminModel.find();
@@ -105,7 +96,8 @@ exports.addLawyer = async (req, res) => {
 
         })
     } catch (error) {
-        next(error);
+        res.status(500).json({ Error: error.message })
+        console.log(error)
     }
 }
 exports.deleteLawyer = async (req, res) => {
