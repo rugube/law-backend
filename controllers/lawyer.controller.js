@@ -80,7 +80,8 @@ exports.lawyerSignup = async (req, res) => {
             const emailBody = otpEmail(newPass); // Generate the email content using the template
 
             // Send email notification with the email body
-            sendEmail(email, emailBody);
+            const email = req.body.email; // Get the email address from the request
+            sendEmail(emailBody, email); // Pass the email and email body as arguments
 
             res.status(201).json({ msg: "Signup successful", status: "success" });
 
