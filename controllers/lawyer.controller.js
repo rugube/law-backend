@@ -36,7 +36,36 @@ exports.lawyerLogin = async (req, res) => {
         res.send({ msg: "login failed", status: "error" })
     }
 }
-
+exports.sendProposal = async (req, res) => {
+    try {
+      const { jobId, proposal } = req.body;
+      const lawyerId = req.user.LawyerId; // Assuming you store lawyer's ID in the JWT
+  
+      // Check if the job with the given ID exists
+      const job = await JobModel.findById(jobId);
+      if (!job) {
+        return res.status(404).json({ msg: 'Job not found' });
+      }
+  
+      // Create a proposal object
+      const newProposal = {
+        lawyer: lawyerId,
+        proposal: proposal,
+      };
+  
+      // Add the proposal to the job's proposals array
+      job.proposals.push(newProposal);
+  
+      // Save the job with the new proposal
+      await job.save();
+  
+      res.status(201).json({ msg: 'Proposal sent successfully' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ msg: 'Failed to send proposal' });
+    }
+  };
+  
 exports.lawyerSignup = async (req, res) => {
     try {
         const { email, password, name, address, bio, skills, profession, gender, phone, image, price, languages, rating, experience, Rank } = req.body;
