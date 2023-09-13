@@ -1,32 +1,20 @@
-import express from "express"
-import { verifyAdmin, verifyToken, verifyUser } from "../utils/verifyToken.js"
-import { createJob, updateJob, getLawyerJobs, deleteJob, getJob, getJobs, applyJobs, searchJobs, getUserJobs, getLawyeredJobs } from "../controllers/jobs.js"
+const express = require('express');
+const router = express.Router();
+const jobController = require('../controllers/jobs');
 
-const router = express.Router()
+// Create a new job
+router.post('/post', jobController.postJob);
 
-//CREATE
-router.post("/", verifyToken, createJob)
+// Get a list of all jobs
+router.get('/all', jobController.getAllJobs);
 
-//POST
-router.post("/apply", verifyToken, applyJobs)
-router.post("/search/jobs", verifyToken, searchJobs)
+// Submit a proposal for a job
+router.post('/send-proposal', jobController.sendProposal);
 
-//UPDATE
-router.put("/:id", verifyToken, updateJob)
+// Accept a proposal
+router.put('/accept-proposal', jobController.acceptProposal);
 
-//DELETE
-router.delete("/:id", verifyToken, deleteJob)
+// Reject a proposal
+router.put('/reject-proposal', jobController.rejectProposal);
 
-//GET
-router.get("/find/:id", verifyToken, getJob)
-
-//GET ALL
-router.get("/:id", verifyUser, getUserJobs)
-router.get("/", verifyToken, getJobs)
-router.get("/lawyer_jobs", verifyToken, getLawyerJobs)
-router.get("/lawyer/:id", verifyToken, getLawyerJobs)
-router.get("/lawyered/:id", verifyToken, getLawyeredJobs)
-
-
-
-export default router
+module.exports = router;

@@ -1,29 +1,32 @@
-import mongoose from "mongoose"
+const mongoose = require('mongoose');
 
 const JobSchema = new mongoose.Schema({
-    userId:{
-        type: mongoose.ObjectId,
-        ref: 'User',
-        required: true
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
     },
-    proposals: {
-        type: Map,
-        of: Boolean,
-        default: {}
+    proposals: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Proposal',
+    }],
+    serviceType: {
+      type: String,
+      required: true,
+      enum: ['contract review', 'litigation', 'legal consultation', 'other'],
     },
-    type:{
-        type: String,
-        required: true
+    status: {
+      type: String,
+      enum: ['open', 'in progress', 'closed'],
+      default: 'open',
     },
-    progress:{
-        type: String,
-        enum: ['pending', 'lawyer selected', 'closed'],
-        default: "pending"
+    description: {
+      type: String,
+      required: true,
     },
-    desc:{
-        type: String,
-        required: true
-    }
-},{ timestamps: true })
-
-export default mongoose.model('Job', JobSchema)
+  }, { timestamps: true });
+  
+  const Job = mongoose.model('Job', JobSchema);
+  
+  module.exports = Job;
+  
