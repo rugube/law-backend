@@ -19,7 +19,7 @@ const PORT = process.env.PORT;
 //=============> MIDDLEWARES
 
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: 'https://gwetarangu.netlify.app',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', "Authorization", "Access-Control-Allow-Credentials", "Access-Control-Allow-Origin"],
   credentials: true
