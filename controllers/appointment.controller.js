@@ -52,3 +52,15 @@ exports.deleteAppointment = async (req, res) => {
         res.status(500).json({ error: error.message, success: false });
     }
 }
+
+// Add a new endpoint to get the latest meetings
+exports.getLatestMeetings = async (req, res) => {
+    try {
+      const latestMeetings = await AppointmentModel.find()
+        .sort({ appointment_date: -1 })
+        .limit(3); // Fetch the latest 3 meetings
+      res.status(200).json(latestMeetings);
+    } catch (error) {
+      res.status(500).json({ error: error.message, success: false });
+    }
+  };
