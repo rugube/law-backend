@@ -4,7 +4,7 @@ const authorization = require('../middlewares/authorization.middleware');
 const AppoinmtentRouter = express.Router(); // Keeping the variable name
 
 // Fetch appointments by user email
-AppoinmtentRouter.get('/fetch/userEmail:email', async (req, res) => {
+AppoinmtentRouter.get('/fetch/userEmail', async (req, res) => {
   const email = req.query.email;
   try {
     const data = await AppointmentModel.find({ userEmail: email });
@@ -15,7 +15,7 @@ AppoinmtentRouter.get('/fetch/userEmail:email', async (req, res) => {
 });
 
 // Fetch appointments by lawyer email
-AppoinmtentRouter.get('/fetch/lawyerEmail:email', async (req, res) => {
+AppoinmtentRouter.get('/fetch/lawyerEmail', async (req, res) => {
   const email = req.query.email;
   try {
     const data = await AppointmentModel.find({ lawyerEmail: email });
