@@ -1,7 +1,7 @@
 const express = require('express');
 const AppointmentModel = require('../model/appointment.model');
 const authorization = require('../middlewares/authorization.middleware');
-const AppoinmtentRouter = express.Router(); // Keeping the variable name
+const AppoinmtentRouter = express.Router(); 
 
 // Fetch appointments by user email
 AppoinmtentRouter.get('/fetch/userEmail', async (req, res) => {
