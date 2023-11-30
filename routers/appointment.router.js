@@ -1,40 +1,46 @@
 const express = require('express');
 const AppointmentModel = require('../model/appointment.model');
-const authorization = require('../middlewares/authorization.middleware');
-const AppoinmtentRouter = express.Router(); 
+const AppoinmtentRouter = express.Router();
 
-// Fetch appointments by user email
 AppoinmtentRouter.get('/fetch/userEmail', async (req, res) => {
-  const email = req.query.email;
+  let email = req.query.email;
   try {
-    const data = await AppointmentModel.find({ userEmail: email });
+    console.log('Fetch Appointments Request for User:', email);
+
+    let data = await AppointmentModel.find({ userEmail: email });
     res.send({ data });
   } catch (error) {
+    console.error('Error fetching appointments:', error);
     res.status(500).json({ msg: error.message });
   }
 });
 
-// Fetch appointments by lawyer email
 AppoinmtentRouter.get('/fetch/lawyerEmail', async (req, res) => {
-  const email = req.query.email;
+  let email = req.query.email;
   try {
-    const data = await AppointmentModel.find({ lawyerEmail: email });
+    console.log('Fetch Appointments Request for Lawyer:', email);
+
+    let data = await AppointmentModel.find({ lawyerEmail: email });
     res.send({ data });
   } catch (error) {
+    console.error('Error fetching appointments:', error);
     res.status(500).json({ msg: error.message });
   }
 });
 
-// Fetch latest appointments
-AppoinmtentRouter.get('/latest', async (req, res) => {
+AppoinmtentRouter.get('/count/userEmail', async (req, res) => {
   try {
-    const latestAppointments = await AppointmentModel.find()
-      .sort({ appointment_date: -1 }) // Sort in descending order by appointment date
-      .limit(3); // Limit the results to the latest 3 appointments
-    res.send({ latestAppointments });
+    const userEmail = req.query.email;
+    console.log('Count Appointments Request for User:', userEmail);
+
+    const count = await AppointmentModel.countDocuments({ userEmail });
+    console.log('Meeting Count:', count);
+
+    res.json({ success: true, count });
   } catch (error) {
-    res.status(500).json({ msg: error.message });
+    console.error('Error fetching appointments count:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 });
 
-module.exports = AppoinmtentRouter; // Keeping the export name
+module.exports = AppoinmtentRouter;

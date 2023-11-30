@@ -19,23 +19,30 @@ const transporter = nodemailer.createTransport({
 
 exports.lawyerLogin = async (req, res) => {
     const { email, password } = req.body;
-    const lawyerAvailable = await LawyerModel.findOne({ email });
-    const dbPassword = lawyerAvailable?.password;
-    const LawyerId = lawyerAvailable?._id;
-    if (lawyerAvailable) {
-        bcrypt.compare(password, dbPassword, (err, result) => {
-            if (err) {
-                res.send({ Message: "Password is incorrect" })
-            }
-            if (result) {
-                const token = jwt.sign({ LawyerId }, "ALS");
-                res.send({ msg: "login successful", "token": token, status: "success" })
-            }
-        })
-    } else {
-        res.send({ msg: "login failed", status: "error" })
+    try {
+        const lawyerAvailable = await LawyerModel.findOne({ email });
+        if (lawyerAvailable) {
+            bcrypt.compare(password, lawyerAvailable.password, (err, result) => {
+                if (err) {
+                    console.error("Error comparing passwords:", err);
+                    res.status(500).json({ msg: "Internal server error", status: "error" });
+                }
+                if (result) {
+                    const token = jwt.sign({ LawyerId: lawyerAvailable._id }, "ALS");
+                    res.status(200).json({ msg: "login successful", token, status: "success" });
+                } else {
+                    res.status(401).json({ msg: "Password is incorrect", status: "error" });
+                }
+            });
+        } else {
+            res.status(404).json({ msg: "Lawyer not found", status: "error" });
+        }
+    } catch (error) {
+        console.error("Error during lawyer login:", error);
+        res.status(500).json({ msg: "Internal server error", status: "error" });
     }
-}
+};
+
 exports.sendProposal = async (req, res) => {
     try {
       const { jobId, proposal } = req.body;

@@ -3,7 +3,7 @@ const GoogleRouter = express.Router();
 const passport = require("../config/google.auth");
 const UserModel = require("../model/user.model");
 const bcrypt = require("bcrypt")
-let RedirectLink = `https://gwetarangu.netlify.app`
+let RedirectLink = `http://localhost:3000`
 
 GoogleRouter.get("/google", passport.authenticate('google', { scope: ['profile', 'email'] }));
 

@@ -15,34 +15,27 @@ exports.fetchAllUsers = async (req, res) => {
 }
 exports.createUser = async (req, res) => {
     const { name, gender, phone, email, password } = req.body;
-
+  
     try {
-        const userExists = await UserModel.findOne({ email });
-
-        if (userExists) {
-            return res.json({ Message: "You have already signed up, please login" });
-        }
-
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new UserModel({
-            name,
-            gender,
-            email,
-            phone,
-            password: hashedPassword,
-            verified: false
-        });
-
-        await newUser.save();
-        sendOTPVerificationEmail(newUser, res);
-
-        return res.json({ exist: false, success: true, Message: "Sign up successful" });
+      const existingUser = await UserModel.findOne({ email });
+  
+      if (existingUser) {
+        return res.json({ Message: "You have already signed up. Please login." });
+      }
+  
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const newUser = new UserModel({ name, gender, email, phone, password: hashedPassword, verified: false });
+      await newUser.save();
+  
+      await sendOTPVerificationEmail(newUser, res);
+  
+      return res.json({ exist: false, success: true, Message: "Sign up successful." });
     } catch (error) {
-        console.log(error);
-        return res.json({ exist: false, success: false, Message: "Sign up failed", error });
+      console.log(error);
+      return res.json({ exist: false, success: false, Message: "Sign up failed.", error });
     }
-};
-
+  };
+  
 exports.userLogin = async (req, res) => {
     const { email, password } = req.body;
     const userAvailable = await UserModel.findOne({ email });
@@ -108,40 +101,45 @@ const sendOTPVerificationEmail = async ({ _id, email }, res) => {
 
 exports.verifyOTP = async (req, res) => {
     try {
-        const { userId, otp } = req.body;
-
-        if (!userId || !otp) {
-            return res.json({ msg: "userId and otp are required" });
-        }
-
-        const userRecord = await UserOTP.findOne({ userId });
-
-        if (!userRecord) {
-            return res.json({ msg: "Account record doesn't exist or has already been verified" });
-        }
-
-        const isValidOTP = await bcrypt.compare(otp, userRecord.otp);
-
-        if (!isValidOTP) {
-            return res.json({ msg: "OTP is incorrect" });
-        }
-
-        const payload = { verified: true };
-        await UserModel.findByIdAndUpdate(userId, payload);
-        await UserOTP.deleteMany({ userId });
-        sendEmail(emailTemplate.signupSuccess());
-
-        return res.json({
-            status: 'VERIFIED',
-            msg: "Email Successfully Verified"
-        });
+      const { userId, otp } = req.body;
+  
+      if (!userId) {
+        return res.json({ msg: "userId is missing." });
+      }
+  
+      if (!otp) {
+        return res.json({ msg: "otp is missing." });
+      }
+  
+      const userRecord = await UserOTP.findOne({ userId });
+  
+      if (!userRecord || userRecord.verified) {
+        return res.json({ msg: "Account record doesn't exist or has already been verified." });
+      }
+  
+      const validOTP = await bcrypt.compare(otp, userRecord.otp);
+  
+      if (!validOTP) {
+        return res.json({ msg: "OTP is wrong." });
+      }
+  
+      await UserModel.findByIdAndUpdate(userId, { verified: true });
+      await UserOTP.deleteMany({ userId });
+  
+      sendEmail(emailTemplate.signupSuccess());
+  
+      return res.json({
+        status: 'VERIFIED',
+        msg: "Email successfully verified."
+      });
     } catch (error) {
-        return res.json({
-            status: 'FAILED',
-            error: error.message
-        });
+      return res.json({
+        status: 'FAILED',
+        error: error.message
+      });
     }
-};
+  };
+  
 
 
 exports.forgotPassword = async (req, res) => {

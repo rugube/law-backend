@@ -3,6 +3,7 @@ const UserModel = require("../model/user.model");
 const sendEmail = require("../utils/notificaton");
 const emailTemplate = require('../utils/email-templates.js');
 const LawyerModel = require("../model/lawyer.model");
+const { send } = require("process");
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
@@ -17,50 +18,71 @@ exports.addAppointment = async (req, res) => {
     let payload = req.body;
     const user = await UserModel.find({ email: payload.userEmail });
     const lawyer = await LawyerModel.find({ email: payload.lawyerEmail });
-
-    if (user.length === 0 || lawyer.length === 0) {
-        return res.status(400).json({ msg: "User or lawyer not found", success: false });
-    }
-
-    const userName = user[0].name || "Unknown User";
-    const lawyerName = lawyer[0].name || "Unknown Lawyer";
-
+    console.log(user[0].name, lawyer[0].name, payload.appointment_date?.date, payload?.appointmentTime, payload?.meeting_type)
+    payload['userId'] = req.body.userid;
     const mailOptions = {
         from: "ace.legal.services.official@gmail.com",
-        to: [payload.userEmail, payload.lawyerEmail],
+        to: payload.userEmail,
         subject: "Appointment Status",
-        html: emailTemplate.appointmentSuccess(userName, lawyerName, payload.appointment_date?.date, payload?.appointmentTime, payload?.meeting_type)
+        html: emailTemplate.appointmentSuccess(user[0].name, lawyer[0].name, payload.appointment_date?.date, payload?.appointmentTime, payload?.meeting_type) // html body
     };
-
     try {
         let newAppointment = new AppointmentModel(payload);
         await newAppointment.save();
+        // await sendEmail(emailTemplate.appointmentSuccess(user[0].name, lawyer[0].name, payload.appointment_date?.date, payload?.appointmentTime, payload?.meeting_type))
         await transporter.sendMail(mailOptions);
-        res.status(201).json({ msg: "Appointment Created", success: true });
+        res.status(201).json({ msg: "Appointment Created", success: true })
     } catch (error) {
-        res.status(500).json({ msg: error.message, success: false });
+        res.status(500).json({ msg: error.message, success: false })
     }
 }
 
 exports.deleteAppointment = async (req, res) => {
-    let id = req.body.DeleteId;
-
+    let id = req.body.DeleteId
+    console.log("Delete Request=>>", id);
+    let Appointment = await AppointmentModel.find({ _id: id })
+    if (Appointment.length == 0) {
+        return res.status(200).json({ message: 'No Appointment Found', success: true });
+    }
+    let useremail = Appointment[0].userEmail
     try {
-        await AppointmentModel.findByIdAndDelete(id);
+        await AppointmentModel.findByIdAndDelete(id)
+        // await sendEmail(emailTemplate.appointmentRejected(useremail))
         res.status(200).json({ message: 'Appointment has been removed', success: true });
     } catch (error) {
-        res.status(500).json({ error: error.message, success: false });
+        res.status(500).json({ error: error.message, success: false })
     }
 }
 
-// Add a new endpoint to get the latest meetings
-exports.getLatestMeetings = async (req, res) => {
+// In your appointment.controller.js file
+exports.countAppointmentsForUser = async (req, res) => {
     try {
-      const latestMeetings = await AppointmentModel.find()
-        .sort({ appointment_date: -1 })
-        .limit(3); // Fetch the latest 3 meetings
-      res.status(200).json(latestMeetings);
+      const userEmail = req.query.email;
+      console.log('Count Appointments Request for User:', userEmail);
+  
+      const count = await AppointmentModel.countDocuments({ userEmail });
+      console.log('Meeting Count:', count);
+  
+      res.json({ success: true, count });
     } catch (error) {
-      res.status(500).json({ error: error.message, success: false });
+      console.error('Error counting appointments:', error);
+      res.status(500).json({ success: false, error: 'Internal Server Error' });
     }
   };
+  
+  exports.fetchAppointmentsForUser = async (req, res) => {
+    try {
+      const userEmail = req.query.email;
+      console.log('Fetch Appointments Request for User:', userEmail);
+  
+      const appointments = await AppointmentModel.find({ userEmail });
+      console.log('Latest Appointments:', appointments);
+  
+      res.json({ success: true, data: appointments });
+    } catch (error) {
+      console.error('Error fetching appointments:', error);
+      res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+  };
+  
+

@@ -79,7 +79,7 @@ exports.addLawyer = async (req, res) => {
     try {
         const lawyer = await LawyerModel.find({ email: payload.email });
         if (lawyer.length) {
-            return res.status(403).json({ Error: "Lawyer already exists!" })
+            return res.status(403).json({ Error: "Lawyer already exsisted!" })
         }
         const newPass = generatePassword();
         bcrypt.hash(newPass, 10, async (err, hash) => {

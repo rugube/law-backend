@@ -8,9 +8,7 @@ const app = express();
 const passport = require("./config/google.auth");
 const cookieSession = require("cookie-session");
 const AppoinmtentRouter = require('./routers/appointment.router');
-const cors = require('cors');
-const JobRouter = require('./routers/jobs'); // Import your job router
-
+const router = require('./routers/jobs.router');
 
 //=============> ENV VARIABLES
 require('dotenv').config()
@@ -18,12 +16,11 @@ const PORT = process.env.PORT;
 
 //=============> MIDDLEWARES
 
-app.use(cors({
-  origin: 'https://gwetarangu.netlify.app',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-  allowedHeaders: ['Content-Type', "Authorization", "Access-Control-Allow-Credentials", "Access-Control-Allow-Origin"],
-  credentials: true
-}));
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*'); // Allow any origin during development
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
 app.use(express.json())
 
 //=============> Testing endpoint
@@ -49,15 +46,7 @@ app.use('/lawyer', LawyerRouter)
 app.use('/admin', AdminRouter)
 app.use("/auth", GoogleRouter)
 app.use("/appointment", AppoinmtentRouter)
-app.use('/jobs', JobRouter); // Use the job router with '/api/jobs' prefix
-
-
-app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-
-app.get('/auth/google/callback', passport.authenticate('google', {
-  failureRedirect: '/login', // Redirect on authentication failure
-  successRedirect: '/user/dashboard', // Redirect on successful authentication
-}));
+app.use("/jobs", router)
 
 
 
