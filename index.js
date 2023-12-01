@@ -17,8 +17,10 @@ const PORT = process.env.PORT;
 //=============> MIDDLEWARES
 
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*'); // Allow any origin during development
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Access-Control-Allow-Origin', 'https://gwetarangu.netlify.app');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
   next();
 });
 app.use(express.json())
